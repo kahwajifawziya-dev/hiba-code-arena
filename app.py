@@ -47,10 +47,6 @@ CHALLENGES = [
 ]
 
 
-# -----------------------------------------------------------------------------
-# Persistent-in-session state
-# -----------------------------------------------------------------------------
-
 def initialize_state():
     defaults = {
         "page": "الرئيسية",
@@ -81,10 +77,6 @@ def normalize_code(code):
 
 initialize_state()
 
-
-# -----------------------------------------------------------------------------
-# Theme and responsive layout
-# -----------------------------------------------------------------------------
 st.markdown(
     """
     <style>
@@ -101,6 +93,8 @@ st.markdown(
     .hero h1 { font-size:clamp(2rem,5vw,3.5rem); margin:.4rem 0; color:#fff; line-height:1.4; }
     .hero p { color:#e4dcff; font-size:1.13rem; margin-bottom:0; }
     .eyebrow { color:#d7c6ff; font-weight:700; }
+    .welcome-note { display:flex; align-items:center; gap:.65rem; margin:0 0 1.5rem; padding:1rem 1.25rem; border:1px solid rgba(207,183,255,.32); border-radius:17px; background:linear-gradient(110deg,rgba(124,58,237,.25),rgba(66,107,215,.20)); box-shadow:0 10px 30px rgba(42,27,83,.20); color:#fff; font-size:clamp(1.05rem,2.4vw,1.3rem); font-weight:700; animation:rise .8s ease-out both; }
+    .welcome-note span { font-size:1.35em; }
     .section-title { margin:1.8rem 0 1rem; font-weight:800; }
     .card { height:100%; padding:1.25rem 1.35rem; border-radius:20px; border:1px solid var(--border); background:linear-gradient(145deg,rgba(37,31,57,.95),rgba(24,23,40,.9)); box-shadow:0 12px 32px rgba(0,0,0,.18); transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease; text-align:right; }
     .card:hover { transform:translateY(-4px); border-color:rgba(167,139,250,.48); box-shadow:0 18px 38px rgba(58,37,104,.28); }
@@ -126,10 +120,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
-# -----------------------------------------------------------------------------
-# Sidebar navigation
-# -----------------------------------------------------------------------------
 with st.sidebar:
     st.markdown("## 💜 Hiba's Code Arena")
     st.caption("مساحة للتعلّم والتحدّي والإبداع")
@@ -139,16 +129,13 @@ with st.sidebar:
     st.metric("⭐ مجموع النقاط", total_points())
     st.caption("نقاطك محفوظة خلال جلسة التصفح الحالية.")
 
-
-# -----------------------------------------------------------------------------
-# Pages
-# -----------------------------------------------------------------------------
 page = st.session_state.page
 
 if page == "الرئيسية":
     st.markdown("""
     <section class="hero"><div class="eyebrow">✨ تعلّمي، جرّبي، واصنعي شيئاً رائعاً</div>
     <h1>أهلاً بك في Hiba's Code Arena</h1><p>اكتشف عالم البرمجة وتحدَّ قدراتك!</p></section>
+    <div class="welcome-note" dir="rtl"><span>💌</span> هذه رسالة من تلميذك هادي إلى مس هبة ❤️</div>
     """, unsafe_allow_html=True)
     c1, c2, _ = st.columns([1.2, 1.2, 2])
     c1.button("🚀 ابدأ التعلّم", use_container_width=True, on_click=navigate, args=("اختبار بايثون",))
@@ -175,7 +162,6 @@ elif page == "اختبار بايثون":
     a, b = st.columns(2)
     a.info(f"المستوى: **{level}** · {len(questions)} أسئلة")
     b.info(f"إجابات صحيحة: **{level_correct} / {len(questions)}**")
-
     if index >= len(questions):
         st.success(f"أكملتِ مستوى {level}! أحسنتِ 🌟")
         st.write(f"الإجابات الصحيحة التي حققتِها: **{level_correct} من {len(questions)}**.")
@@ -253,7 +239,7 @@ elif page == "إنجازاتي":
     st.markdown("### تقدّم التعلّم")
     st.progress(completed / 19)
     st.caption(f"أنجزتِ {completed} من 19 فرصة تعلّم.")
-    badges = [("🌱", "بداية جميلة", "اجمعي 10 نقاط.", points >= 10), ("✨", "نجمة ساطعة", "اجمعي 50 نقطة.", points >= 50), ("💎", "مبدعة البر��جة", "اجمعي 100 نقطة.", points >= 100), ("🧠", "خبيرة الاختبار", "أجيبي إجابة صحيحة عن الأسئلة الخمسة عشر.", quiz_count == 15), ("🛠️", "صائدة الأخطاء", "أكملي تحديات تصحيح الأخطاء الأربعة.", challenge_count == 4), ("🏆", "بطلة الساحة", "أكملي كل أسئلة الاختبار والتحديات.", completed == 19)]
+    badges = [("🌱", "بداية جميلة", "اجمعي 10 نقاط.", points >= 10), ("✨", "نجمة ساطعة", "اجمعي 50 نقطة.", points >= 50), ("💎", "مبدعة البرمجة", "اجمعي 100 نقطة.", points >= 100), ("🧠", "خبيرة الاختبار", "أجيبي إجابة صحيحة عن الأسئلة الخمسة عشر.", quiz_count == 15), ("🛠️", "صائدة الأخطاء", "أكملي تحديات تصحيح الأخطاء الأربعة.", challenge_count == 4), ("🏆", "بطلة الساحة", "أكملي كل أسئلة الاختبار والتحديات.", completed == 19)]
     st.markdown("### شاراتك")
     cols = st.columns(2)
     for i, (icon, title, description, unlocked) in enumerate(badges):
